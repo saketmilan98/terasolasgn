@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.terasolasgn.movieinfo.R
+import com.terasolasgn.movieinfo.viewmodel.MainActViewModel
 import com.terasolasgn.movieinfo.viewmodel.MovieDetailViewModel
 
 class MovieDetailFragment : Fragment() {
@@ -16,6 +17,7 @@ class MovieDetailFragment : Fragment() {
     }
 
     private lateinit var viewModel: MovieDetailViewModel
+    private lateinit var viewModelShared: MainActViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +29,10 @@ class MovieDetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MovieDetailViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModelShared = ViewModelProvider(requireActivity()).get(MainActViewModel::class.java)
+
+
+
     }
 
 }
