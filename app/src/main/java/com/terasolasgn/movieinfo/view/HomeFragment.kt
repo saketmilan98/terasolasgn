@@ -17,8 +17,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.slider.Slider
-import com.google.gson.Gson
 import com.terasolasgn.movieinfo.R
 import com.terasolasgn.movieinfo.adapter.FilterRecyclerAdapter
 import com.terasolasgn.movieinfo.adapter.HomeFragRecyclerAdapter
@@ -31,7 +29,6 @@ import com.terasolasgn.movieinfo.viewmodel.MainActViewModel
 import kotlinx.android.synthetic.main.filter_bs.*
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.sort_bs.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
@@ -46,8 +43,8 @@ class HomeFragment : Fragment() {
     lateinit var mainDataList : MovieDataClass
     lateinit var rvAdapter : HomeFragRecyclerAdapter
     lateinit var filterRvAdapter : FilterRecyclerAdapter
-    lateinit var bottomSheetBehavior1: BottomSheetBehavior<ConstraintLayout> //for filter
-    lateinit var bottomSheetBehavior2: BottomSheetBehavior<ConstraintLayout> //for sort
+    lateinit var bottomSheetBehavior1: BottomSheetBehavior<ConstraintLayout> // bottomsheet for filter
+    lateinit var bottomSheetBehavior2: BottomSheetBehavior<ConstraintLayout> //bottomsheet for sort
 
     var isLastPage1 = false
     var isLoading1 = false
@@ -80,7 +77,7 @@ class HomeFragment : Fragment() {
 
 
 
-    fun setupRecycler(){
+    fun setupRecycler(){ //for setting up recyclerview adapter and loading data for first time
         rvAdapter = HomeFragRecyclerAdapter(ArrayList(), activity?.supportFragmentManager!!, requireContext(), this)
         rv1_homefrag?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         rv1_homefrag?.adapter = rvAdapter
@@ -104,7 +101,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    fun addItems(){
+    fun addItems(){ // this method will be called for loading next 10 movie data when user will reach end of recyclerview
         Log.e("insideAddItems", "true")
         val tempList = ArrayList<MovieDataClassItem>()
         //val startIndex = currentPage*offSet
@@ -123,7 +120,7 @@ class HomeFragment : Fragment() {
         isLoading1 = false
     }
 
-    fun setupFilterSortButtons(){
+    fun setupFilterSortButtons(){ //for setting clicklisteners for filter , sorf and clear filter icons in top toolbar
         iv1_toolbar.setOnClickListener {
             showClearFilterDialog()
         }
@@ -135,7 +132,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun filterMovies(type : String, key : String){
+    fun filterMovies(type : String, key : String){ // this method takes two arguments, first is type of filter like director or genre and second paramter is key which consist of director name or genre name
         mainDataList = viewModelShared.getItem()!!
         val tempFilteredList : List<MovieDataClassItem>
         if(type == "director"){
@@ -164,31 +161,7 @@ class HomeFragment : Fragment() {
         addItems()
     }
 
-    fun showClearFilterDialog(){
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Alert")
-        builder.setMessage("Do you want to clear all filter and sorting?")
-        builder.setIcon(android.R.drawable.ic_dialog_alert)
-
-        builder.setPositiveButton("Yes"){dialogInterface, which ->
-            setupBottomSheet()
-            setupRatingTab()
-            filterMovies("other","none")
-        }
-        //performing cancel action
-        /*builder.setNeutralButton("Cancel"){dialogInterface , which ->
-            Toast.makeText(this,"clicked cancel\n operation cancel",Toast.LENGTH_LONG).show()
-        }*/
-        //performing negative action
-        builder.setNegativeButton("Cancel"){dialogInterface, which ->
-
-        }
-        val alertDialog: AlertDialog = builder.create()
-        alertDialog.setCancelable(true)
-        alertDialog.show()
-    }
-
-    fun sortMovies(type : String, key : String){
+    fun sortMovies(type : String, key : String){ // this method takes two arguments, first is type of sorting like year or title and second paramter is key which specifies whether sorting will be ascending or descending
         val tempFilteredList : List<MovieDataClassItem>
         if(type == "year"){
             if(key == "latestfirst"){
@@ -223,8 +196,25 @@ class HomeFragment : Fragment() {
         addItems()
     }
 
+    fun showClearFilterDialog(){ // for showing clear filter dialog box
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Alert")
+        builder.setMessage("Do you want to clear all filter and sorting?")
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setPositiveButton("Yes"){ _, _ ->
+            setupBottomSheet()
+            setupRatingTab()
+            filterMovies("other","none")
+        }
+        builder.setNegativeButton("Cancel"){dialogInterface, which ->
 
-    fun setupBottomSheet(){
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+    }
+
+    fun setupBottomSheet(){ // for setting functionality of bottomsheet of filter and sorting
         bottomSheetBehavior1.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
@@ -405,23 +395,23 @@ class HomeFragment : Fragment() {
 
     }
 
-    fun showBottomSheetFilter(){
+    fun showBottomSheetFilter(){ // for expanding filter bottomsheet
         bottomSheetBehavior1.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-    fun hideBottomSheetFilter(){
+    fun hideBottomSheetFilter(){ // for collapsing filter bottomsheet
         bottomSheetBehavior1.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    fun showBottomSheetSort(){
+    fun showBottomSheetSort(){ // for expanding sort bottomsheet
         bottomSheetBehavior2.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-    fun hideBottomSheetSort(){
+    fun hideBottomSheetSort(){// for collapsing sort bottomsheet
         bottomSheetBehavior2.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    fun setupRatingTab(){
+    fun setupRatingTab(){ // for setting spinners in rating tab
         val ratingList = Tools().returnListOfRatings()
         val adapter1 = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_dropdown_item, ratingList)
         spinner1_cl2_filter_bs.adapter = adapter1
@@ -454,13 +444,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun onRatingClicked(){
+    fun onRatingClicked(){ // for showing/hiding appropriate layouts on when rating tab is clicked
         cl2_filter_bs.visibility = View.VISIBLE
         tv3_cl2_addedittaskact.visibility = View.VISIBLE
         sv1_filter_bs.visibility = View.GONE
         rv1_filter_bs.visibility = View.GONE
     }
-    fun onDirectorOrGenreClicked(){
+    fun onDirectorOrGenreClicked(){ // for showing/hiding appropriate layouts on when director or genre tab is clicked
         cl2_filter_bs.visibility = View.GONE
         tv3_cl2_addedittaskact.visibility = View.GONE
         sv1_filter_bs.visibility = View.VISIBLE

@@ -18,11 +18,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this).get(MainActViewModel::class.java)
-        val text = resources.openRawResource(R.raw.moviedata).bufferedReader().use { it.readText() }
-        val mainMovieList: MovieDataClass = Gson().fromJson(text, MovieDataClass::class.java)
-        viewModel.setItem(mainMovieList)
-        viewModel.setDirectorList(Tools().returnListOfDirectors(mainMovieList))
-        viewModel.setGenreList(Tools().returnListOfGenres(mainMovieList))
+        val text = resources.openRawResource(R.raw.moviedata).bufferedReader().use { it.readText() } // reading moviedata json from raw folder and storing it in a string
+        val mainMovieList: MovieDataClass = Gson().fromJson(text, MovieDataClass::class.java) // converting above generated string to dataclass object
+        viewModel.setItem(mainMovieList) //storing generated dataclass object in viewmodel to allow it to be accessed by homefragment
+        viewModel.setDirectorList(Tools().returnListOfDirectors(mainMovieList)) //storing list of directors in viewmodel to allow it to be accessed by homefragment for filtering by director
+        viewModel.setGenreList(Tools().returnListOfGenres(mainMovieList)) //storing list of genres in viewmodel to allow it to be accessed by homefragment for filtering by director
         supportFragmentManager.beginTransaction().add(R.id.frame_container_mainact, HomeFragment()).commit()
 
 

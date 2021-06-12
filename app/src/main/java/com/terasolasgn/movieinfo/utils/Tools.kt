@@ -6,11 +6,11 @@ import com.terasolasgn.movieinfo.model.MovieDataClass
 
 class Tools {
 
-    fun showToast(str : String, ctx : Context){
+    fun showToast(str : String, ctx : Context){ //method for showing toast
         Toast.makeText(ctx, str, Toast.LENGTH_LONG).show()
     }
 
-    fun returnStringOfArray(arr : List<String>?) : String{
+    fun returnStringOfArray(arr : List<String>?) : String{ // this method will take a list of string as input and return a single string having all items separated by comma
         var tempStr = ""
         if(arr.isNullOrEmpty()){
             return tempStr
@@ -23,7 +23,7 @@ class Tools {
         return tempStr.substringBeforeLast(", ")
     }
 
-    fun returnListOfDirectors(dataa : MovieDataClass) : List<String>{
+    fun returnListOfDirectors(dataa : MovieDataClass) : List<String>{ //this method will return a hashset of director name from all the movies
         val hashSet = HashSet<String>()
         dataa.forEach{it1->
             it1.info.directors?.forEach {it2->
@@ -33,7 +33,7 @@ class Tools {
         return hashSet.toList()
     }
 
-    fun returnListOfGenres(dataa : MovieDataClass) : List<String>{
+    fun returnListOfGenres(dataa : MovieDataClass) : List<String>{ //this method will return a hashset of genre name from all the movies
         val hashSet = HashSet<String>()
         dataa.forEach{it1->
             it1.info.genres?.forEach {it2->
@@ -43,7 +43,7 @@ class Tools {
         return hashSet.toList()
     }
 
-    fun checkKeyPresentInList(arr : List<String>?, key : String) : Boolean{
+    fun checkKeyPresentInList(arr : List<String>?, key : String) : Boolean{ //this method checks whether a given key is present in given list of string
         return if(arr.isNullOrEmpty()){
             false
         } else {
@@ -51,7 +51,7 @@ class Tools {
         }
     }
 
-    fun returnListOfRatings() : List<String> {
+    fun returnListOfRatings() : List<String> { //this method returns list of string having numbers from 1.0 to 10.0 incremented by 0.1
         val listOfRatings = ArrayList<String>()
         for(k in 10..100){
             listOfRatings.add("${k/10F}       ")
@@ -59,7 +59,7 @@ class Tools {
         return listOfRatings
     }
 
-    fun checkRatingInRange(rating : Double?, from : Float, to : Float) : Boolean{
+    fun checkRatingInRange(rating : Double?, from : Float, to : Float) : Boolean{ // this method checks whether a given value lies within a given range
         return if(rating != null){
             rating in from..to
         } else {

@@ -37,7 +37,6 @@ class FilterRecyclerAdapter(var dataa: ArrayList<String>, val fragmentManager: F
             (fragment as HomeFragment).filterMovies(type, dataa[position])
             selected = position
             notifyDataSetChanged()
-            //(fragment as HomeFragment).hideBottomSheet()
         }
     }
 

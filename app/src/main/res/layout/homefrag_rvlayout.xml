@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/placeholder_image"
+            tools:srcCompat="@drawable/placeholder_image"
             android:adjustViewBounds="true"
             android:paddingTop="10dp"
             android:paddingStart="10dp"
