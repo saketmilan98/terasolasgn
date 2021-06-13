@@ -1,7 +1,16 @@
 package com.terasolasgn.movieinfo.utils
 
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
+import coil.load
 import com.terasolasgn.movieinfo.model.MovieDataClass
 
 class Tools {
@@ -10,7 +19,20 @@ class Tools {
         Toast.makeText(ctx, str, Toast.LENGTH_LONG).show()
     }
 
-    fun returnStringOfArray(arr : List<String>?) : String{ // this method will take a list of string as input and return a single string having all items separated by comma
+    fun returnStringOfArray(arr : List<String>? , delimeter : String) : String{ // this method will take a list of string as input and return a single string having all items separated by given delimeter
+        var tempStr = ""
+        if(arr.isNullOrEmpty()){
+            return tempStr
+        }
+        else {
+            for (element in arr) {
+                tempStr += "$element$delimeter"
+            }
+        }
+        return tempStr.substringBeforeLast(delimeter)
+    }
+
+    fun returnStringOfArrayWithAnd(arr : List<String>?) : String{ //this method will take a list of string as input and return a single string replacing last comma with and
         var tempStr = ""
         if(arr.isNullOrEmpty()){
             return tempStr
@@ -20,7 +42,9 @@ class Tools {
                 tempStr += "$element, "
             }
         }
-        return tempStr.substringBeforeLast(", ")
+        tempStr = tempStr.substringBeforeLast(", ")
+        tempStr = tempStr.replace("(.*), (.*)".toRegex(), "$1 and $2")
+        return tempStr
     }
 
     fun returnListOfDirectors(dataa : MovieDataClass) : List<String>{ //this method will return a hashset of director name from all the movies

@@ -51,14 +51,23 @@ class MovieDetailFragment : Fragment() {
         movieData.let {
             iv1_detail_frag.load(it.info.image_url)
             tv1_detail_frag.text = (it.title + " (${it.year})")
-            tv2_detail_frag.text = ("Rank ${it.info.rank} | ${TimeUnit.SECONDS.toMinutes(it.info.running_time_secs.toLong())} mins | ${Tools().returnStringOfArray(it.info.genres!!)}")
-            tv4_detail_frag.text = it.info.plot
-            tv5_detail_frag.text = ("Director(s): ${Tools().returnStringOfArray(it.info.directors)}\n" + "Actor(s): ${Tools().returnStringOfArray(it.info.actors)}")
+            tv2_detail_frag.text = ("by ${Tools().returnStringOfArrayWithAnd(it.info.directors)}")
             if(it.info.rating != null){
-                tv3_detail_frag.text = "${it.info.rating}"
+                rb1_detail_frag.rating = it.info.rating.toFloat()/2F
+                tv3_detail_frag.text = ("${it.info.rating}/10")
             }
             else {
+                rb1_detail_frag.visibility = View.GONE
                 tv3_detail_frag.visibility = View.GONE
+            }
+            if(it.info.rank != null){
+                tv6_detail_frag.text = ("Rank ${it.info.rank}")
+            }
+
+            tv4_detail_frag.text = Tools().returnStringOfArray(it.info.genres, " | ")
+            tv7_detail_frag.text = ("Cast: ${Tools().returnStringOfArrayWithAnd(it.info.actors)}")
+            if(it.info.plot != null){
+                tv5_detail_frag.text = it.info.plot
             }
         }
         topToolbar_detail_frag.setNavigationOnClickListener {

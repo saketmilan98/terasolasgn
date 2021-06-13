@@ -30,9 +30,9 @@ class HomeFragRecyclerAdapter(var dataa: ArrayList<MovieDataClassItem>, val frag
         dataa[position].let {
             holder.posterIv.load(it.info.image_url)
             holder.titleDateTv.text = (it.title + " (${it.year})")
-            holder.rankDurationGenreTv.text = ("Rank ${it.info.rank} | ${TimeUnit.SECONDS.toMinutes(it.info.running_time_secs.toLong())} mins | ${Tools().returnStringOfArray(it.info.genres!!)}")
+            holder.rankDurationGenreTv.text = ("Rank ${it.info.rank} | ${TimeUnit.SECONDS.toMinutes(it.info.running_time_secs.toLong())} mins | ${Tools().returnStringOfArray(it.info.genres!!, ", ")}")
             holder.plotTv.text = it.info.plot
-            holder.directorActorTv.text = ("Director(s): ${Tools().returnStringOfArray(it.info.directors)}\n" + "Actor(s): ${Tools().returnStringOfArray(it.info.actors)}")
+            holder.directorActorTv.text = ("Director(s): ${Tools().returnStringOfArray(it.info.directors, ", ")}\n" + "Actor(s): ${Tools().returnStringOfArray(it.info.actors, ", ")}")
             if(it.info.rating != null){
                 holder.ratingTv.text = "${it.info.rating}"
                 holder.ratingTv.visibility = View.VISIBLE
